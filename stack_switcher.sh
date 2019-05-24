@@ -63,6 +63,7 @@ fui_switch_creds () {
 }
 
 fui_switch_release () {
+    fui_switch_backup
     fui_switch_purge
     fui_switch_check
     echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch 1.8" > /etc/apt/sources.list.d/freeswitch.list
@@ -72,12 +73,13 @@ fui_switch_release () {
 }
 
 fui_switch_unstable () {
-   fui_switch_purge
-   fui_switch_check
-   echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" > /etc/apt/sources.list.d/freeswitch.list
-   echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" >> /etc/apt/sources.list.d/freeswitch.list
-   fui_switch_install
-   fui_switch_restore
+    fui_switch_backup
+    fui_switch_purge
+    fui_switch_check
+    echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" > /etc/apt/sources.list.d/freeswitch.list
+    echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" >> /etc/apt/sources.list.d/freeswitch.list
+    fui_switch_install
+    fui_switch_restore
 }
 
 fui_switch_install () {
@@ -88,13 +90,17 @@ fui_switch_install () {
 }
 
 fui_switch_purge () {
-    cp -r /etc/freeswitch ~/
     apt-get purge -y freeswitch* freeswitch-* libfreeswitch* freeswitch-systemd
     apt-get clean
     apt-get autoclean
     #if [ $DEPS == y ]; then
 	apt-get autoremove -y
     #fi
+}
+
+fui_switch_backup () {
+    rm -rf ~/freeswitch
+    yes | cp -rf /etc/freeswitch ~/
 }
 
 fui_switch_restore () {
