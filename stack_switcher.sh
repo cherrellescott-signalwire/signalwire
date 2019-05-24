@@ -1,15 +1,18 @@
 #!/bin/bash
 
 fui_switch_parse () {
-    if [ $1 == release ]; then
+    if [ "$1" == "release" ]; then
 	OPPOSITE=unstable
 	VERSION=1.8
     else
 	OPPOSITE=release
     fi
 
-    if [ ! $1 ]; then
-	printf "\n\033[1;31mERROR:\033[0m Please choose \"release\" or \"unstable\" to switch to that repo\n\n"
+    if [ "$1" != "release" ] && [ "$1" != "unstable" ]; then
+	printf "\nUSAGE:\n\n"
+	printf "\033[1;32mbash $0 release\033[0m\n\n"
+	printf "or\n\n"
+	printf "\033[1;32mbash $0 unstable\033[0m\n\n"
 	exit
     fi
 
@@ -95,7 +98,7 @@ fui_switch_purge () {
 }
 
 fui_switch_restore () {
-    rm -rm /etc/freeswitch
+    rm -rf /etc/freeswitch
     yes | cp -rf ~/freeswitch /etc
     printf "\nAll done. Your fresh version is:\n\n"
     fs_cli -x version
