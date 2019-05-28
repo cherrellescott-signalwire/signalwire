@@ -1,6 +1,7 @@
 #!/bin/bash
 
-fui_switch_parse () {
+fui_switcher_parse () {
+    printf "entering function $FUNCNAME\n"
     if [ "$1" == "release" ]; then
 	OPPOSITE=unstable
 	VERSION=1.8
@@ -42,7 +43,8 @@ fui_switch_parse () {
     esac
 }
 
-fui_switch_check () {
+fui_switcher_check () {
+    printf "entering function $FUNCNAME\n"
     if [ $(dpkg -l | grep -c freeswitch) -eq 0 ]; then
 	printf "\nINFO: System appears clean. Proceeding with new $1 install...\n\n"
     else
@@ -61,7 +63,8 @@ fui_switch_check () {
     fi
 }
 
-fui_switch_creds () {
+fui_switcher_creds () {
+    printf "entering function $FUNCNAME\n"
     read -p "FSA username: " USERNAME
     read -p "FSA password: " PASSWORD
     apt-get install -q -y -f apt-transport-https wget software-properties-common
@@ -69,7 +72,8 @@ fui_switch_creds () {
     echo "machine fsa.freeswitch.com login $USERNAME password $PASSWORD" > /etc/apt/auth.conf
 }
 
-fui_switch_release () {
+fui_switcher_release () {
+    printf "entering function $FUNCNAME\n"
     fui_switch_backup
     fui_switch_purge
     fui_switch_check
@@ -79,7 +83,8 @@ fui_switch_release () {
     fui_switch_restore
 }
 
-fui_switch_unstable () {
+fui_switcher_unstable () {
+    printf "entering function $FUNCNAME\n"
     fui_switch_backup
     fui_switch_purge
     fui_switch_check
@@ -89,14 +94,16 @@ fui_switch_unstable () {
     fui_switch_restore
 }
 
-fui_switch_install () {
+fui_switcher_install () {
+    printf "entering function $FUNCNAME\n"
     apt-get update
     apt-get install -y freeswitch-all freeswitch-all-dbg
     systemctl enable freeswitch
     systemctl start freeswitch
 }
 
-fui_switch_purge () {
+fui_switcher_purge () {
+    printf "entering function $FUNCNAME\n"
     if [ $(grep -c ${VERSION:-$1} /etc/apt/sources.list.d/freeswitch.list) -ge 1 ]; then
 	apt-get purge -y freeswitch* freeswitch-* libfreeswitch* freeswitch-systemd
 	apt-get clean
@@ -109,17 +116,19 @@ fui_switch_purge () {
     fi
 }
 
-fui_switch_backup () {
+fui_switcher_backup () {
+    printf "entering function $FUNCNAME\n"
     rm -rf ~/freeswitch
     yes | cp -rf /etc/freeswitch ~/
 }
 
-fui_switch_restore () {
+fui_switcher_restore () {
+    printf "entering function $FUNCNAME\n"
     rm -rf /etc/freeswitch
     yes | cp -rf ~/freeswitch /etc
     printf "\nAll done. Your fresh version is:\n\n"
     fs_cli -x version
     printf "\n"
 }
-fui_switch_parse $@
+fui_switcher_parse $@
 exit 0
