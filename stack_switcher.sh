@@ -37,8 +37,8 @@ fui_switcher_parse () {
     #read -p "Purge all the depencies too? Will take a few minutes longer. y/n [y]:" DEPS
     #DEPS=${DEPS:-y}
     case $1 in
-	(release) fui_switch_creds; fui_switch_release ;;
-	(unstable) fui_switch_creds; fui_switch_unstable ;;
+	(release) fui_switcher_creds; fui_switcher_release ;;
+	(unstable) fui_switcher_creds; fui_switcher_unstable ;;
 	(*) printf "\n\033[1;31mERROR:\033[0m Please choose \"release\" or \"unstable\" to switch to that repo\n\n"; exit ;;
     esac
 }
@@ -50,7 +50,7 @@ fui_switcher_check () {
     else
 	if [ $(dpkg -l | grep -c freeswitch) -ge 1 ]; then
 	    printf "\nWARNING: trying one more time to remove remaining freeswitch $OPPOSITE packages\n\n"
-	    fui_switch_purge
+	    fui_switcher_purge
 	fi
 	if [ $(dpkg -l | grep -c freeswitch) -eq 0 ]; then
 	    printf "\nINFO: System appears clean. Proceeding with new $1 install...\n\n"
@@ -74,24 +74,24 @@ fui_switcher_creds () {
 
 fui_switcher_release () {
     printf "entering function $FUNCNAME\n"
-    fui_switch_backup
-    fui_switch_purge
-    fui_switch_check
+    fui_switcher_backup
+    fui_switcher_purge
+    fui_switcher_check
     echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch 1.8" > /etc/apt/sources.list.d/freeswitch.list
     echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch 1.8" >> /etc/apt/sources.list.d/freeswitch.list
-    fui_switch_install
-    fui_switch_restore
+    fui_switcher_install
+    fui_switcher_restore
 }
 
 fui_switcher_unstable () {
     printf "entering function $FUNCNAME\n"
-    fui_switch_backup
-    fui_switch_purge
-    fui_switch_check
+    fui_switcher_backup
+    fui_switcher_purge
+    fui_switcher_check
     echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" > /etc/apt/sources.list.d/freeswitch.list
     echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" >> /etc/apt/sources.list.d/freeswitch.list
-    fui_switch_install
-    fui_switch_restore
+    fui_switcher_install
+    fui_switcher_restore
 }
 
 fui_switcher_install () {
