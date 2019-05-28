@@ -24,8 +24,8 @@ fui_switch_parse () {
     fi
 
     if [ $INTENT == intent ];then
-	printf "Proceeding with \033[01;33m$1\033[0m packages installation\n"
-	printf "This script path will essentially attempt purge \033[01;33m$1\033[0m packages and reinstall them\n"
+	printf "\nProceeding with \033[01;33m$1\033[0m packages installation\n"
+	printf "This script path will essentially attempt purge \033[01;33m$1\033[0m packages and reinstall them\n\n"
     else
 	printf "\n\033[1;35mWARNING:\033[0m You about to switch from \033[01;33m$OPPOSITE\033[0m packages to \033[01;33m$1\033[0m packages!!!\n"
     fi
