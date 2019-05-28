@@ -112,7 +112,7 @@ fui_switcher_purge () {
 	apt-get autoremove -y
 	#fi
     else
-	printf "No FreeSWITCH packages found, system seems clean\n"    
+	printf "No FreeSWITCH packages found, system seems clean... proceeding with install\n"    
     fi
 }
 
