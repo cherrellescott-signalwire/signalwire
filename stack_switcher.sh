@@ -23,7 +23,7 @@ fui_switch_parse () {
 	INTENT=${INTENT:-intent}
     fi
 
-    if [ $INTENT == intent ];then
+    if [ "$INTENT" == "intent" ];then
 	printf "\nProceeding with re-installation of \033[01;33m$1\033[0m packages\n"
     else
 	printf "\n\033[1;35mWARNING:\033[0m You about to switch from \033[01;33m$OPPOSITE\033[0m packages to \033[01;33m$1\033[0m packages!!!\n"
