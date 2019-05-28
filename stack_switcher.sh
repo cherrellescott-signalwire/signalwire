@@ -17,15 +17,14 @@ fui_switch_parse () {
     fi
 
     if [ $(grep -c ${VERSION:-$1} /etc/apt/sources.list.d/freeswitch.list) -ge 1 ]; then
-	printf "\n\033[1;35mWARNING:\033[0m FreeSWITCH repo already setup for $1 packages\nPlease choose \"$OPPOSITE\" if that is your true intent.\n\n"
-	printf "Else, if you want to continue using $1 repo, hit [Enter] to proceed, otherwise [Ctrl+c] to cancel, then try again..."
+	printf "\n\033[1;35mWARNING:\033[0m FreeSWITCH repo already setup for \033[01;33m$1\033[0m packages\nPlease choose \033[01;33m$OPPOSITE\033[0m if that is your true intent.\n\n"
+	printf "Else, if you want to continue using \033[01;33m$1\033[0m repo, hit [Enter] to proceed, otherwise [Ctrl+c] to cancel, then try again..."
 	read -p "" INTENT
 	INTENT=${INTENT:-intent}
     fi
 
     if [ $INTENT == intent ];then
-	printf "\nProceeding with \033[01;33m$1\033[0m packages installation\n"
-	printf "This script path will essentially attempt purge \033[01;33m$1\033[0m packages and reinstall them\n\n"
+	printf "\nProceeding with re-installation of \033[01;33m$1\033[0m packages installation\n"
     else
 	printf "\n\033[1;35mWARNING:\033[0m You about to switch from \033[01;33m$OPPOSITE\033[0m packages to \033[01;33m$1\033[0m packages!!!\n"
     fi
