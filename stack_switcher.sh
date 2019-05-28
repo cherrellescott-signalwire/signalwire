@@ -97,12 +97,16 @@ fui_switch_install () {
 }
 
 fui_switch_purge () {
-    apt-get purge -y freeswitch* freeswitch-* libfreeswitch* freeswitch-systemd
-    apt-get clean
-    apt-get autoclean
-    #if [ $DEPS == y ]; then
+    if [ $(grep -c ${VERSION:-$1} /etc/apt/sources.list.d/freeswitch.list) -ge 1 ]; then
+	apt-get purge -y freeswitch* freeswitch-* libfreeswitch* freeswitch-systemd
+	apt-get clean
+	apt-get autoclean
+	#if [ $DEPS == y ]; then
 	apt-get autoremove -y
-    #fi
+	#fi
+    else
+	printf "No FreeSWITCH packages found, system seems clean\n"    
+    fi
 }
 
 fui_switch_backup () {
