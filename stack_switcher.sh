@@ -104,7 +104,7 @@ fui_switcher_install () {
 
 fui_switcher_purge () {
     printf "entering function $FUNCNAME\n"
-    if [ $(dpkg -l | grep freeswitch) -ge 1 ]; then
+    if [ $(dpkg -l | grep -c freeswitch) -ge 1 ]; then
 	apt-get purge -y freeswitch* freeswitch-* libfreeswitch* freeswitch-systemd
 	apt-get clean
 	apt-get autoclean
