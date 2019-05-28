@@ -46,9 +46,9 @@ fui_switch_check () {
 	if [ $(dpkg -l | grep -c freeswitch) -eq 0 ]; then
 	    printf "\nINFO: System appears clean. Proceeding with new $1 install...\n\n"
 	else
-	    printf '\n\033[1;31mERROR:\033[0m FreeSWITCH $OPPOSITE packages were still found on system\n.'
+	    printf "\n\033[1;31mERROR:\033[0m FreeSWITCH $OPPOSITE packages were still found on system\n."
 	    printf 'Try to Use "dpkg -l | grep freeswitch" to locate them and  "apt-get purge WHATEVER" to manually remove them\n'
-	    printf 'Then run script again.\n\n'
+	    printf "Then run script again.\n\n'
 	    exit
 	fi
     fi
