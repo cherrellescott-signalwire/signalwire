@@ -17,7 +17,7 @@ fui_switch_parse () {
     fi
 
     if [ $(grep -c ${VERSION:-$1} /etc/apt/sources.list.d/freeswitch.list) -ge 1 ]; then
-	printf "\n\033[1;31mERROR:\033[0m FreeSWITCH repo already setup for $1 packages\nPlease choose \"$OPPOSITE\" if that is your true intent.\n\n"
+	printf "\n\033[1;35mWARNING:\033[0m FreeSWITCH repo already setup for $1 packages\nPlease choose \"$OPPOSITE\" if that is your true intent.\n\n"
 	printf "Else, if you want to continue using $1 repo, hit [Enter] to proceed, otherwise [Ctrl+c] to cancel, then try again..."
 	read -p "" INTENT
 	INTENT=${INTENT:-intent}
