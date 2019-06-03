@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#USERNAME=
+#PASSWORD=
+
 fui_switcher_parse () {
     printf "entering function $FUNCNAME\n"
     if [ "$1" == "release" ]; then
@@ -16,12 +19,13 @@ fui_switcher_parse () {
 	printf "\033[1;32mbash $0 unstable\033[0m\n\n"
 	exit
     fi
-
-    if [ $(grep -c ${VERSION:-$1} /etc/apt/sources.list.d/freeswitch.list) -ge 1 ]; then
-	printf "\n\033[1;35mWARNING:\033[0m FreeSWITCH repo already setup for \033[01;33m$1\033[0m packages\nPlease choose \033[01;33m$OPPOSITE\033[0m if that is your true intent.\n\n"
-	printf "Else, if you want to continue using \033[01;33m$1\033[0m repo, hit [Enter] to proceed, otherwise [Ctrl+c] to cancel, then try again..."
-	read -p "" INTENT
-	INTENT=${INTENT:-intent}
+    if [ -f /etc/apt/sources.list.d/freeswitch.list ]; then
+	if [ $(grep -c ${VERSION:-$1} /etc/apt/sources.list.d/freeswitch.list) -ge 1 ]; then
+	    printf "\n\033[1;35mWARNING:\033[0m FreeSWITCH repo already setup for \033[01;33m$1\033[0m packages\nPlease choose \033[01;33m$OPPOSITE\033[0m if that is your true intent.\n\n"
+	    printf "Else, if you want to continue using \033[01;33m$1\033[0m repo, hit [Enter] to proceed, otherwise [Ctrl+c] to cancel, then try again..."
+	    read -p "" INTENT
+	    INTENT=${INTENT:-intent}
+	fi
     fi
 
     if [ "$INTENT" == "intent" ];then
@@ -57,19 +61,20 @@ fui_switcher_check () {
 	else
 	    printf "\n\033[1;31mERROR:\033[0m FreeSWITCH $OPPOSITE packages were still found on system\n."
 	    printf 'Try to Use "dpkg -l | grep freeswitch" to locate them and  "apt-get purge WHATEVER" to manually remove them\n'
-	    printf "Then run script again.\n\n"
-	    exit
+	    printf "Then run script again.\n\n" exit
 	fi
     fi
 }
 
 fui_switcher_creds () {
     printf "entering function $FUNCNAME\n"
-    read -p "FSA username: " USERNAME
-    read -p "FSA password: " PASSWORD
-    apt-get install -q -y -f apt-transport-https wget software-properties-common
-    wget -O - https://$USERNAME:$PASSWORD@fsa.freeswitch.com/repo/deb/fsa/pubkey.gpg | apt-key add -
-    echo "machine fsa.freeswitch.com login $USERNAME password $PASSWORD" > /etc/apt/auth.conf
+    if [ ! $USERNAME ] && [ ! $PASSWORD ]; then
+	read -p "FSA username: " USERNAME
+	read -s -p "FSA password: " PASSWORD
+    fi
+    apt-get install -q -y -f apt-transport-https wget software-properties-common || fui_switcher_error $FUNCNAME $LINENO
+    wget -O - https://$USERNAME:$PASSWORD@fsa.freeswitch.com/repo/deb/fsa/pubkey.gpg | apt-key add - || fui_switcher_error $FUNCNAME $LINENO
+    echo "machine fsa.freeswitch.com login $USERNAME password $PASSWORD" > /etc/apt/auth.conf || fui_switcher_error $FUNCNAME $LINENO
 }
 
 fui_switcher_release () {
@@ -77,8 +82,8 @@ fui_switcher_release () {
     fui_switcher_backup
     fui_switcher_purge
     fui_switcher_check
-    echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch 1.8" > /etc/apt/sources.list.d/freeswitch.list
-    echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch 1.8" >> /etc/apt/sources.list.d/freeswitch.list
+    echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch 1.8" > /etc/apt/sources.list.d/freeswitch.list || fui_switcher_error $FUNCNAME $LINENO
+    echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch 1.8" >> /etc/apt/sources.list.d/freeswitch.list || fui_switcher_error $FUNCNAME $LINENO
     fui_switcher_install
     fui_switcher_restore
 }
@@ -88,28 +93,29 @@ fui_switcher_unstable () {
     fui_switcher_backup
     fui_switcher_purge
     fui_switcher_check
-    echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" > /etc/apt/sources.list.d/freeswitch.list
-    echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" >> /etc/apt/sources.list.d/freeswitch.list
+    echo "deb https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" > /etc/apt/sources.list.d/freeswitch.list || fui_switcher_error $FUNCNAME $LINENO
+    echo "deb-src https://fsa.freeswitch.com/repo/deb/fsa/ stretch unstable" >> /etc/apt/sources.list.d/freeswitch.list || fui_switcher_error $FUNCNAME $LINENO
     fui_switcher_install
     fui_switcher_restore
 }
 
 fui_switcher_install () {
     printf "entering function $FUNCNAME\n"
-    apt-get update
-    apt-get install -y freeswitch-all freeswitch-all-dbg
-    systemctl enable freeswitch
-    systemctl start freeswitch
+    apt-get update || fui_switcher_error $FUNCNAME $LINENO
+    #apt-get install -y freeswitch-all freeswitch-all-dbg  || fui_switcher_error $FUNCNAME $LINENO
+    apt-get install -y freeswitch freeswitch-systemd freeswitch-mod-event-socket || fui_switcher_error $FUNCNAME $LINENO
+    #systemctl enable freeswitch || fui_switcher_error $FUNCNAME $LINENO
+    #systemctl start freeswitch || fui_switcher_error $FUNCNAME $LINENO
 }
 
 fui_switcher_purge () {
     printf "entering function $FUNCNAME\n"
     if [ $(dpkg -l | grep -c freeswitch) -ge 1 ]; then
-	apt-get purge -y freeswitch* freeswitch-* libfreeswitch* freeswitch-systemd
-	apt-get clean
-	apt-get autoclean
+	apt-get purge -y freeswitch* freeswitch-* libfreeswitch* freeswitch-systemd || fui_switcher_error $FUNCNAME $LINENO
+	apt-get clean || fui_switcher_error $FUNCNAME $LINENO
+	apt-get autoclean || fui_switcher_error $FUNCNAME $LINENO
 	#if [ $DEPS == y ]; then
-	apt-get autoremove -y
+	    #apt-get autoremove -y || fui_switcher_error $FUNCNAME $LINENO
 	#fi
     else
 	printf "No FreeSWITCH packages found, system seems clean... proceeding with install\n"    
@@ -118,17 +124,43 @@ fui_switcher_purge () {
 
 fui_switcher_backup () {
     printf "entering function $FUNCNAME\n"
-    rm -rf ~/freeswitch
-    yes | cp -rf /etc/freeswitch ~/
+    if [ -d ~/freeswitch ]; then
+	rm -rf ~/freeswitch || fui_switcher_error $FUNCNAME $LINENO
+    else
+	printf "~/freeswitch does not exist, not removing\n"
+    fi
+    if [ -d /etc/freeswitch ]; then
+       yes | cp -rf /etc/freeswitch ~/ || fui_switcher_error $FUNCNAME $LINENO
+    else
+	printf "/etc/freeswitch does not exist, not backing up..\n"
+	printf "unless this is a new system, you may want to investigate this issue. Hit [Enter] to continue, or [Ctrl+c] to cancel"
+	read
+    fi
 }
 
 fui_switcher_restore () {
     printf "entering function $FUNCNAME\n"
-    rm -rf /etc/freeswitch
-    yes | cp -rf ~/freeswitch /etc
-    printf "\nAll done. Your fresh version is:\n\n"
-    fs_cli -x version
+    if [ -d /etc/freeswitch ]; then
+        rm -rf /etc/freeswitch || fui_switcher_error $FUNCNAME $LINENO
+    fi
+    if [ -d ~/freeswitch ]; then
+        yes | cp -rf ~/freeswitch /etc || fui_switcher_error $FUNCNAME $LINENO
+    fi
+    if [ $(pidof freeswitch) ]; then
+	fs_cli -x version || fui_switcher_error $FUNCNAME $LINENO
+    else
+	printf "ERROR: FreesWITCH not running\n"    
+    fi
+
     printf "\n"
+}
+
+fui_switcher_error () {
+        ELINE=$(sed -n $2p $0)
+        ELINE=${ELINE#"${ELINE%%[![:space:]]*}"}
+        ELOG="$?"
+        printf "$1:$2 -- ERROR:$? -- $ELINE"
+	exit
 }
 fui_switcher_parse $@
 exit 0
