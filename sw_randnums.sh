@@ -106,7 +106,7 @@ sw_bulk_number_purchase () {
 	sw_bulk_number_available $TYPE $ATOTAL
 	while read -r PHONE; do
 	    if  [ $ACTION != dry ]; then
-		printf "$p: puchased $PHONE\n" | tee -a /tmp/sw_purchsed_numbers.txt
+		printf "$p: puchased $PHONE\n" | tee -a /tmp/sw_purchased_numbers.txt
 		curl https://$SW_SPACE_URL/api/laml/2010-04-01/Accounts/$SW_PROJ_KEY/IncomingPhoneNumbers.json \
 		     -X POST \
 		     --data-urlencode "PhoneNumber=$PHONE" \
