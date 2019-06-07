@@ -112,7 +112,7 @@ sw_bulk_number_purchase () {
 		     --data-urlencode "PhoneNumber=$PHONE" \
 		     -u "$SW_PROJ_KEY:$SW_TOKEN"
 	    else
-		printf "$p: $PHONE from ${RANDOM_REGION:-$RANDOM_AREACODE} is available\n"
+		printf "$p: $PHONE from ${RANDOM_REGION:-$RANDOM_AREACODE} is available\n" | tee -a /tmp/sw_purchased_numbers.txt
 	    fi
 	    p=$[$p+1]
 	done < <(printf '%s\n' "$PHONE_LIST")
