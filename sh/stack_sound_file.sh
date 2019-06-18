@@ -118,7 +118,7 @@ stack_sounds_get () {
             wget -O /tmp/sounds/"$SOUND" https://files.freeswitch.org/releases/sounds/"$SOUND" || { printf "error on line: %s\n" "$LINENO" && exit; }
         fi
 	if [ ! -f /tmp/sounds/md5/"$SOUND".md5 ]; then
-            wget --quiet https://files.freeswitch.org/releases/sounds/"$SOUND".md5 || { printf "error on line: %s\n" "$LINENO" && exit; }
+            wget --quiet https://files.freeswitch.org/releases/sounds/"$SOUND".md5 || printf "No md5 found for %s. Skipping this md5\n" "$SOUND.md5"
 	fi
         if [ -f /tmp/sounds/"$SOUND" ] && [ -f /tmp/sounds/md5/"$SOUND".md5 ]; then
             if [[ "$(md5sum -c /tmp/sounds/md5/"$SOUND".md5)" =~ OK ]]; then
