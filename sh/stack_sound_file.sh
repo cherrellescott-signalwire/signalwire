@@ -123,7 +123,7 @@ stack_sounds_get () {
         if [ -f /tmp/sounds/"$SOUND" ] && [ -f /tmp/sounds/md5/"$SOUND".md5 ]; then
             if [[ "$(md5sum -c /tmp/sounds/md5/"$SOUND".md5)" =~ OK ]]; then
                 printf "md5sum for %s passed... installing...\n" "$SOUND"
-		tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { printf "error on line: %s\n" "$LINENO" && exit; }
+		tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { rm -rf /tmp/sounds/"$SOUND" && printf "error with sound file %s on line %s\nRemoved sound file, please run again.\n" "$SOUND" "$LINENO" && exit; }
 	    else
                 rm -rf /tmp/sounds/"$SOUND"
                 rm -rf /tmp/sounds/md5/"$SOUND".md5
@@ -133,7 +133,7 @@ stack_sounds_get () {
 	    fi
 	elif [ -f /tmp/sounds/"$SOUND" ]; then
 	    printf "There is no md5 for %s... installing without integrity check...\n" "$SOUND"
-	    tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { printf "error on line: %s\n" "$LINENO" && exit; }
+	    tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { rm -rf /tmp/sounds/"$SOUND" && printf "error with sound file %s on line %s\nRemoved sound file, please run again.\n" "$SOUND" "$LINENO" && exit; }
 	else
 	    printf "something went wrong installing %s... seems to be missing...\n" "$SOUND"
 	    exit
