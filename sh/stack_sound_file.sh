@@ -9,9 +9,9 @@ stack_sounds_get () {
 
     if [ ! -d /tmp/sounds ]; then
 	mkdir -p /tmp/sounds/md5
-	cd /tmp/sounds/md5 || { printf "error on line: %s" "$LINENO" && exit; }
+	cd /tmp/sounds/md5 || { printf "error on line: %s\n" "$LINENO" && exit; }
     else
-	cd /tmp/sounds/md5 || { printf "error on line: %s" "$LINENO" && exit; }
+	cd /tmp/sounds/md5 || { printf "error on line: %s\n" "$LINENO" && exit; }
     fi
 
     declare -a SOUNDS=(
@@ -115,15 +115,15 @@ stack_sounds_get () {
     )
     for SOUND in "${SOUNDS[@]}"; do
         if [ ! -f /tmp/sounds/"$SOUND" ]; then
-            wget -O /tmp/sounds/"$SOUND" https://files.freeswitch.org/releases/sounds/"$SOUND" || { printf "error on line: %s" "$LINENO" && exit; }
+            wget -O /tmp/sounds/"$SOUND" https://files.freeswitch.org/releases/sounds/"$SOUND" || { printf "error on line: %s\n" "$LINENO" && exit; }
         fi
 	if [ ! -f /tmp/sounds/md5/"$SOUND".md5 ]; then
-            wget --quiet https://files.freeswitch.org/releases/sounds/"$SOUND".md5 || { printf "error on line: %s" "$LINENO" && exit; }
+            wget --quiet https://files.freeswitch.org/releases/sounds/"$SOUND".md5 || { printf "error on line: %s\n" "$LINENO" && exit; }
 	fi
         if [ -f /tmp/sounds/"$SOUND" ] && [ -f /tmp/sounds/md5/"$SOUND".md5 ]; then
             if [[ "$(md5sum -c /tmp/sounds/md5/"$SOUND".md5)" =~ OK ]]; then
                 printf "md5sum for %s passed... installing...\n" "$SOUND"
-		tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { printf "error on line: %s" "$LINENO" && exit; }
+		tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { printf "error on line: %s\n" "$LINENO" && exit; }
 	    else
                 rm -rf /tmp/sounds/"$SOUND"
                 rm -rf /tmp/sounds/md5/"$SOUND".md5
@@ -133,14 +133,14 @@ stack_sounds_get () {
 	    fi
 	elif [ -f /tmp/sounds/"$SOUND" ]; then
 	    printf "There is no md5 for %s... installing without integrity check...\n" "$SOUND"
-	    tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { printf "error on line: %s" "$LINENO" && exit; }
+	    tar -zxvf /tmp/sounds/"$SOUND" -C "$SOUNDS_DIR" || { printf "error on line: %s\n" "$LINENO" && exit; }
 	else
 	    printf "something went wrong installing %s... seems to be missing...\n" "$SOUND"
 	    exit
 	fi
     done
-    chown -R "$SOUNDS_PERMS" "$SOUNDS_DIR" || { printf "error on line: %s" "$LINENO" && exit; }
-    ls -la /usr/share/freeswitch/sounds || { printf "error on line: %s" "$LINENO" && exit; }
+    chown -R "$SOUNDS_PERMS" "$SOUNDS_DIR" || { printf "error on line: %s\n" "$LINENO" && exit; }
+    ls -la /usr/share/freeswitch/sounds || { printf "error on line: %s\n" "$LINENO" && exit; }
     printf "all done installing sounds.\n"
 }
 stack_sounds_get
