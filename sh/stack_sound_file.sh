@@ -125,11 +125,13 @@ stack_sounds_get () {
                 printf "md5sum for $SOUND passed... installing...\n"
 		tar -zxvf /tmp/sounds/$SOUND -C $SOUNDS_DIR
 	    else
-		printf "the md5sum for $SOUND failed\n"
-		#rm -rf /tmp/sounds/md5/$SOUND.md5
+                rm -rf /tmp/sounds/$SOUND
+                rm -rf /tmp/sounds/md5/$SOUND.md5
+                printf "The md5sum for $SOUND failed.\nThe sounds tarball and md5 have been removed. Trying running script again... \n"
+		exit
 	    fi
 	elif [ -f /tmp/sounds/$SOUND ]; then
-	    printf "There is no md5 for $SOUND... installing without check...\n"
+	    printf "There is no md5 for $SOUND... installing without integrity check...\n"
 	    tar -zxvf /tmp/sounds/$SOUND -C $SOUNDS_DIR
 	else
 	    printf "something went wrong installing $SOUND... seems to be missing...\n"
