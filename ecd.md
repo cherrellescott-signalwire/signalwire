@@ -21970,8 +21970,8 @@ Log Level: ERROR
 Message: Invalid Autopilot Actions JSON  
 Secondary Message: null    
 Description: Autopilot Actions Configured on the Task are Invalid  
-Cause: Actions JSON does not comply with the Actions Schema (https://carnelian-neanderthal-8008.twil.io/assets/ActionsSchema.json)  
-Solutions: Test your JSON response against the Actions Schema (https://carnelian-neanderthal-8008.twil.io/assets/ActionsSchema.json)  
+Cause: Actions JSON does not comply with the Actions Schema 
+Solutions: Test your JSON response against the Actions Schema 
 Docs:
 ## ERROR - 90100
 
@@ -21980,10 +21980,10 @@ Docs:
  Autopilot Actions Configured on the Task are Invalid
 
 #### Possible Causes
-Actions JSON does not comply with the Actions Schema (https://carnelian-neanderthal-8008.twil.io/assets/ActionsSchema.json)
+Actions JSON does not comply with the Actions Schema 
 
 #### Possible Solutions
-Test your JSON response against the Actions Schema (https://carnelian-neanderthal-8008.twil.io/assets/ActionsSchema.json)
+Test your JSON response against the Actions Schema 
 
 
 
