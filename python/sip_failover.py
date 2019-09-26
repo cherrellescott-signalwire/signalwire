@@ -7,7 +7,7 @@ DEBUG = True
 CSRF_COOKIE_SECURE = False
 SECRET_KEY = 'XXXX'
 ROOT_URLCONF = __name__
-ALLOWED_HOSTS = ["0.0.0.0","139.59.81.245","127.0.0.1"]
+ALLOWED_HOSTS = ["0.0.0.0","139.X.X.X","127.0.0.1"]
 
 response = "";
 @csrf_exempt
