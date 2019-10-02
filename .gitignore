@@ -1,2 +1,3 @@
 nodejs/.env
 nodejs/node_modules
+python/sip_failover/sip_failover/.env

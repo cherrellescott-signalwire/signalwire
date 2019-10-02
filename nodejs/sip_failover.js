@@ -48,6 +48,10 @@ var su;
 var sd;
 var sf;
 var nodeurl;
+var sw_number_1;
+var sw_number_2;
+var sip_dialstring_1;
+var sip_dialstring_2;
 
 // for reading variables from .env file
 const dotenv = require('dotenv');
@@ -83,6 +87,14 @@ function get_vars() {
 
     // your node js base url and port
     nodeurl = process.env.NODE_URL
+
+    // your SW trunk numbers which are forwarded to your nodejs server:port URL
+    sw_number_1 = process.env.SW_NUMBER_1
+    sw_number_2 = process.env.SW_NUMBER_2
+
+    // your sip dialstrings
+    sip_dialstring_1 = process.env.SIP_DIALSTRING_1
+    sip_dialstring_2 = process.env.SIP_DIALSTRING_2
 }
 
 
@@ -115,35 +127,51 @@ server.use(bp.urlencoded({ extended: true }));
 
 
 //
-// This is the "/sipdial" app I initially forword my SW number to
+// This is the "/siprouter" app I initially forword my SW number to
 // under "WHEN A CALL COMES IN" setting for you signalwire phone
-// I set mine to point to "http://XXXXXXX.com:3000/sipdial" URL
+// I set mine to point to "http://XXXXXXX.com:3000/siprouter" URL
 // Notice the "<Dial action=URL>" where i'm specifying to use "/sipfailover" url where the object "DialSipResponseCode" is parsed
-server.post("/sipdial", (req,res) => {
-    console.log("received request for incoming call... responding with first sip dialstring")
+server.post("/siprouter", (req,res) => {
+    console.log("incoming call from " + req.body.From)
     res.set('Content-Type', 'text/xml');
-    res.send('<Response><Dial action="http://ezra.joshebosh.com:3000/sipfailover"><Sip>sip:334@joshebosh-phones.sip.signalwire.com</Sip></Dial></Response>')
-//    res.send('<Response><Dial action="http://' + nodeurl + '/sipfailover"><Sip>sip:' + sd + '.sip.signalwire.com;transport=upd</Sip></Dial></Response>')
+    if (req.body.To == sw_number_1) {
+	console.log("Dialed Number is:" + req.body.To)
+	res.send('<Response><Dial action="http://' + nodeurl + '/sipfailover"><Sip>' + sip_dialstring_1 + '?trunk=' + req.body.To + '</Sip></Dial></Response>')
+    } else if (req.body.To == sw_number_2) {
+	res.send('<Response><Dial action="http://' + nodeurl + '/sipfailover"><Sip>' + sip_dialstring_2 + '?trunk=' + req.body.To + '</Sip></Dial></Response>')
+    } else {
+	res.send('<Response><Say>Your failover request failed. Please try again</Say></Response>')
+    }
 });
 
 
 //
-// if the "/sipdial" dialstring "334@joshebosh" fails, the call will go here next for another SIP dialstring
+// if the dialstring "sip_dialstring_1" at  fails, the call will go here next for failover SIP dialstring
 //
 server.post("/sipfailover", function (req,res) {
     //console.log(req)  // verbose request info
-    console.log('Incoming POST:');
-    console.log(req.body)
+    //console.log(req.body)
 
     if ((req.body.DialSipResponseCode > 299) || (req.body.DialCallStatus === 'failed')) {
-    //if (req.body.DialSipResponseCode > 299) {
+	if (req.body.To == sw_number_1) {
+	    console.log('failing over to: '+ sip_dialstring_2);
+	    res.set('Content-Type', 'text/xml');
+	    res.send('<Response><Dial><Sip action="http://' + nodeurl + '/sipfailover">' + sip_dialstring_2 + '?trunk=' + sw_number_1 + '</Sip></Dial></Response>')
+	} else if (req.body.To == sw_number_2) {
+	    console.log('failing over to: '+ sip_dialstring_1);
+	    res.set('Content-Type', 'text/xml');
+	    res.send('<Response><Dial><Sip action="http://' + nodeurl + '/sipfailover">' + sip_dialstring_1 + '?trunk=' + sw_number_2 + '</Sip></Dial></Response>')
+	}
+    } else if (req.body.DialSipResponseCode >= 200 && req.body.DialSipResponseCode <= 299) {
 	res.set('Content-Type', 'text/xml');
-	res.send('<Response><Dial action="http://' + nodeurl +'/sipfailover"><Sip>sip:' + sf + '.sip.signalwire.com;transport=udp</Sip></Dial></Response>')
+	res.send('<Response><Say>Your sip failover scenario has Suceeded. Goodbye</Say></Response>')
+        console.log("failover attempt suceeded.")
     } else {
 	res.set('Content-Type', 'text/xml');
 	res.send('<Response><Say>Your sip failover scenario has failed. Please try again</Say></Response>')
         console.log("failover attempt failed.")
     }
+
 });
 
 //
