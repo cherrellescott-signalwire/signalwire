@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script src="https://cdn.signalwire.com/libs/js/relay/1.2.2/relay.min.js"></script>
+<video id="localVideo" autoplay="true" ></video>
+<video id="remoteVideo" autoplay="true" ></video>
+
+
+
+<script type="text/javascript">
+var client;
+var currentCall = null;
+var project = '981ab3f3-3bee-408f-ad96-5ebe87c318ac';
+var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NzEwNjE5MTgsImlzcyI6IlNpZ25hbFdpcmUgSldUIiwianRpIjoiMlRlQkpqNU1HaVFVeDdnVXJ3RVlHZUNpeENZIiwic2NvcGUiOiJ3ZWJydGMiLCJzdWIiOiI5ODFhYjNmMy0zYmVlLTQwOGYtYWQ5Ni01ZWJlODdjMzE4YWMiLCJyZXNvdXJjZSI6InNoYXNoaV8xMV8xMF8xOSIsImV4cCI6MTU3MTYwMTkxOH0.8fXbANwVXTOZc4GHEODAsJuk33bAEaE_UOGNV6aHDluAkI_Uo5BNNABdV56kPzGI8LLQ61wTC--3b4M9_3UPSg';
+var number = '';
+var audio =  '1';
+var video =  '1';
+
+function connect() {
+      client = new Relay({
+        project: project,
+        token: token
+      });
+      // client.autoRecoverCalls = false;
+      client.remoteElement = 'remoteVideo';
+      client.localElement = 'localVideo';
+      if (audio === "1") {
+          console.log("Enabling Audio");
+        client.enableMicrophone()
+      } else {
+        client.disableMicrophone()
+      }
+      if (video === "1") {
+                console.log("Enabling Video");
+        client.enableWebcam()
+      } else {
+        client.disableWebcam()
+      }
+           client.on('signalwire.ready', function() {
+
+      });
+      // Update UI on socket close
+      client.on('signalwire.socket.close', function() {
+                console.log("signalwire.socket.close Closed ...");
+      });
+      // Handle error...
+      client.on('signalwire.error', function(error){
+        console.error("SignalWire error:", error);
+      });
+      client.on('signalwire.notification', handleNotification);
+      console.log("signalwire.notification ...");
+      client.connect();
+    }
+        function disconnect() {
+      console.log("Disconnecting...");
+      client.disconnect();
+    }
+        connect();
+        function handleNotification(notification) {
+      console.log("notification", notification.type, notification);
+      switch (notification.type) {
+        case 'callUpdate':
+          handleCallUpdate(notification.call);
+          break;
+        case 'userMediaError':
+          // Permission denied or invalid audio/video params on `getUserMedia`
+          break;
+      }
+    }
+
+     function handleCallUpdate(call) {
+      currentCall = call;
+      switch (call.state) {
+        case 'new': // Setup the UI
+          break;
+        case 'trying': // You are trying to call someone and he's ringing now
+          break;
+        case 'recovering': // Call is recovering from a previous session
+          if (confirm('Recover the previous call?')) {
+            currentCall.answer();
+          } else {
+            currentCall.hangup();
+          }
+          break;
+        case 'ringing': // Someone is calling you
+          if (confirm('Pick up the call?')) {
+            currentCall.answer();
+          } else {
+            currentCall.hangup();
+          }
+          break;
+        case 'active': // Call has become active
+
+          break;
+        case 'hangup': // Call is over
+          break;
+        case 'destroy': // Call has been destroyed
+          currentCall = null;
+          break;
+      }
+    }
+
+</script>
+
+</body>
+</html>

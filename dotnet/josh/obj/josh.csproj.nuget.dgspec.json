@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "restore": {
+    "/var/www/html/joshebosh/joshua.tel/cs/josh/josh.csproj": {}
+  },
+  "projects": {
+    "/var/www/html/joshebosh/joshua.tel/cs/josh/josh.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/var/www/html/joshebosh/joshua.tel/cs/josh/josh.csproj",
+        "projectName": "josh",
+        "projectPath": "/var/www/html/joshebosh/joshua.tel/cs/josh/josh.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/var/www/html/joshebosh/joshua.tel/cs/josh/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/root/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "dependencies": {
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "dotenv.net": {
+              "target": "Package",
+              "version": "[1.0.6, )"
+            },
+            "signalwire-dotnet": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.0.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/bin/Debug/netcoreapp2.1/LaMLTest.deps.json
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/bin/Debug/netcoreapp2.1/LaMLTest.runtimeconfig.json
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/bin/Debug/netcoreapp2.1/LaMLTest.runtimeconfig.dev.json
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/bin/Debug/netcoreapp2.1/LaMLTest.dll
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/bin/Debug/netcoreapp2.1/LaMLTest.pdb
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/obj/Debug/netcoreapp2.1/LaMLTest.csprojAssemblyReference.cache
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/obj/Debug/netcoreapp2.1/LaMLTest.csproj.CoreCompileInputs.cache
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/obj/Debug/netcoreapp2.1/LaMLTest.AssemblyInfoInputs.cache
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/obj/Debug/netcoreapp2.1/LaMLTest.AssemblyInfo.cs
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/obj/Debug/netcoreapp2.1/LaMLTest.dll
+/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/obj/Debug/netcoreapp2.1/LaMLTest.pdb

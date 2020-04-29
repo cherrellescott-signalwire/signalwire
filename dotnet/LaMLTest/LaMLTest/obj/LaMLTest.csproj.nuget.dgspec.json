@@ -1,0 +1,81 @@
+{
+  "format": 1,
+  "restore": {
+    "/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/LaMLTest.csproj": {}
+  },
+  "projects": {
+    "/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/LaMLTest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/LaMLTest.csproj",
+        "projectName": "LaMLTest",
+        "projectPath": "/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/LaMLTest.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/var/www/html/joshebosh/joshua.tel/cs/LaMLTest/LaMLTest/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/root/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Routing": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Server.Kestrel": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "SignalWire.AspNet": {
+              "target": "Package",
+              "version": "[1.0.0-rc1, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/obj/Debug/netcoreapp2.1/LaML_Message_Send.csprojAssemblyReference.cache
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/obj/Debug/netcoreapp2.1/LaML_Message_Send.AssemblyInfoInputs.cache
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/obj/Debug/netcoreapp2.1/LaML_Message_Send.AssemblyInfo.cs
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/bin/Debug/netcoreapp2.1/LaML_Message_Send.deps.json
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/bin/Debug/netcoreapp2.1/LaML_Message_Send.runtimeconfig.json
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/bin/Debug/netcoreapp2.1/LaML_Message_Send.runtimeconfig.dev.json
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/bin/Debug/netcoreapp2.1/LaML_Message_Send.dll
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/bin/Debug/netcoreapp2.1/LaML_Message_Send.pdb
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/obj/Debug/netcoreapp2.1/LaML_Message_Send.dll
+/var/www/html/joshebosh/joshua.tel/cs/LaML_Message_Send/obj/Debug/netcoreapp2.1/LaML_Message_Send.pdb
